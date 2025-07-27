@@ -1,29 +1,42 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const db = require('../db');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const db = require('../config/db');
 
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
-  const hashed = await bcrypt.hash(password, 10);
-  const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-  db.query(sql, [name, email, hashed], (err) => {
-    if (err) return res.status(400).send('User already exists');
-    res.send('Signup successful');
-  });
-});
 
-router.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  const sql = 'SELECT * FROM users WHERE email = ?';
-  db.query(sql, [email], async (err, results) => {
-    if (err || results.length === 0) return res.status(400).send('Invalid email');
-    const valid = await bcrypt.compare(password, results[0].password);
-    if (!valid) return res.status(400).send('Wrong password');
-    const token = jwt.sign({ id: results[0].id }, 'secretKey');
-    res.json({ token, name: results[0].name });
-  });
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Check if user already exists
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+      if (err) return res.status(500).json({ error: 'Database error (check email)' });
+
+      if (results.length > 0) {
+        return res.status(400).json({ error: 'User already exists' });
+      }
+
+      // Insert user
+      db.query(
+        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+        [name, email, hashedPassword],
+        (err, result) => {
+          if (err) {
+            return res.status(500).json({ error: 'Error inserting user' });
+          }
+
+          return res.status(201).json({ message: 'User registered successfully' });
+        }
+      );
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error (hashing)' });
+  }
 });
 
 module.exports = router;
