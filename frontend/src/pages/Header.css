@@ -1,53 +1,24 @@
-/* Header.css */
-
 .header {
-    background-color: #282c34;
-    padding: 1rem 0;
-    color: #ffffff;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .header .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ffffff;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-links li {
-    display: inline;
-  }
-  
-  .nav-links a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 0.75rem;
-    transition: background-color 0.3s ease, border-radius 0.3s ease;
-  }
-  
-  .nav-links a:hover {
-    background-color: #3a3f47;
-    border-radius: 6px;
-  }
-  
+  padding: 1rem;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-links a {
+  color: #61dafb;
+  margin-left: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
