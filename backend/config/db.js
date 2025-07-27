@@ -1,19 +1,18 @@
-// config/db.js
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',          // Update if your MySQL username is different
-  password: 'root',          // Add your MySQL password here
-  database: 'todo_app'   // This must match your DB name
+  user: 'root',
+  password: 'root', // Change if your MySQL has a password
+  database: 'todo_app' // Make sure this matches your database name
 });
 
-connection.connect((err) => {
+db.connect((err) => {
   if (err) {
-    console.error('Database connection failed: ' + err.stack);
-    return;
+    console.error('Database connection failed:', err);
+  } else {
+    console.log('Connected to MySQL database.');
   }
-  console.log('Connected to MySQL database.');
 });
 
-module.exports = connection;
+module.exports = db;
