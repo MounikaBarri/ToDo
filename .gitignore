@@ -1,0 +1,11 @@
+# Ignore Node.js dependencies
+backend/node_modules/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
