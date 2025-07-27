@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';
-
+import { API_URL } from '../config';
 
 const Signup = () => {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -15,12 +15,13 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', form);
-      alert('Signup successful!');
+      const res = await axios.post(`${API_URL}/api/auth/signup`, form);
+      alert(res.data.message || 'Signup successful!');
       navigate('/login');
     } catch (err) {
       console.error('Signup error:', err);
-      alert('Signup failed: ' + (err.response?.data?.message || err.message));
+      const errorMsg = err.response?.data?.error || 'Signup failed. Please try again.';
+      alert(errorMsg);
     }
   };
 
